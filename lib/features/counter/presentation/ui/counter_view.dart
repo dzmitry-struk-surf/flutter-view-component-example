@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_view_component_example/core/view_component/view_component.dart';
-import 'package:flutter_view_component_example/feature/presentation/component.dart';
+import 'package:flutter_view_component_example/features/counter/presentation/business_logic/counter_bloc.dart';
+import 'package:flutter_view_component_example/features/counter/presentation/ui_logic/counter_component.dart';
 
 class CounterView extends WidgetView<CounterComponent> {
-  const CounterView(CounterComponent component, {Key? key})
-      : super(component, key: key);
+  const CounterView(
+    super.component, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +20,10 @@ class CounterView extends WidgetView<CounterComponent> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            ValueListenableBuilder<int>(
-              valueListenable: component.counterState,
-              builder: (_, value, __) {
+            BlocBuilder<CounterBloc, CounterState>(
+              builder: (context, state) {
                 return Text(
-                  '$value',
+                  '${state.counter}',
                   style: Theme.of(context).textTheme.headlineMedium,
                 );
               },
@@ -32,13 +35,13 @@ class CounterView extends WidgetView<CounterComponent> {
         mainAxisSize: MainAxisSize.min,
         children: [
           FloatingActionButton(
-            onPressed: component.onIncreasePressed,
+            onPressed: component.onIncrementPressed,
             tooltip: 'Increment',
             child: const Icon(Icons.add),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
-            onPressed: component.onDecreasePressed,
+            onPressed: component.onDecrementPressed,
             tooltip: 'Decrement',
             child: const Icon(Icons.remove),
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_view_component_example/core/view_component/widget_view.dart';
+import 'package:flutter_view_component_example/core/view_component/view_component.dart';
 
 /// An abstract class that represents the state of a component.
 ///
@@ -16,6 +16,11 @@ abstract class ComponentState<T extends StatefulWidget, C> extends State<T> {
   /// that represents the component's view.
   WidgetView<C> buildView(BuildContext context);
 
+  /// Wraps the `WidgetView` returned by [buildView].
+  ///
+  /// Can be implemented to insert widgets that perform UI logic in the widget tree, for example, BlocListener.
+  Widget wrapView(WidgetView<C> view) => view;
+
   @override
-  Widget build(BuildContext context) => buildView(context);
+  Widget build(BuildContext context) => wrapView(buildView(context));
 }
